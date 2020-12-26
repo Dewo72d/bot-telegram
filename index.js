@@ -1,5 +1,5 @@
 const TelegramBot = require("node-telegram-bot-api");
-const token = "1473004197:AAEjKHI1bXmqIKKi7ILfatdfg51M1OKSEa0";
+const token = "***";
 const controller = require("./controller");
 const keyNav = require("./keyboard/keyboard-buttons");
 const keyboard = require("./keyboard/keyboard");
