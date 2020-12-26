@@ -106,6 +106,8 @@ bot.onText(/\/start/, async (msg) => {
           });
           break;
 
+        //-----Add menu------//
+
         case keyNav.mainMenuB.add:
           await bot.sendMessage(chatid, `Добавить`, {
             reply_markup: { keyboard: keyboard.addMenu },
@@ -116,7 +118,7 @@ bot.onText(/\/start/, async (msg) => {
               case keyNav.addMenuB.client:
                 await bot.sendMessage(
                   chatid,
-                  "Введите данные в формате:\nИмя, Телефон\n\nПример: Евгений Павлович, 09856843515",
+                  "Введите данные в формате:\nИмя, Телефон\n\nЕвгений Павлович, 09856843515",
                   {
                     reply_markup: { keyboard: keyboard.cancelI },
                   }
@@ -135,6 +137,27 @@ bot.onText(/\/start/, async (msg) => {
                   );
                 });
                 break;
+              case keyNav.addMenuB.accounting:
+                await bot.sendMessage(
+                  chatid,
+                  "Введите данные в формате:\nНомер клиента, Полная дата заезда, Полная дата выезда, Заметка\n\n380664620504, 26.12.2020, 27.12.2020, Чисто",
+                  {
+                    reply_markup: { keyboard: keyboard.cancelI },
+                  }
+                );
+                bot.on("message", async (msg) => {
+                  await bot.sendMessage(
+                    chatid,
+                    await controller
+                      .addRecord(msg)
+                      .catch(
+                        () => "Неверный формат/Клиент с таким номером есть"
+                      ),
+                    {
+                      parse_mode: "HTML",
+                    }
+                  );
+                });
             }
           });
           break;

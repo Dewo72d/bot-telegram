@@ -1,6 +1,25 @@
 const mysql = require("mysql");
 const db = require("./db");
 
+function checkDate(inD, outD) {
+  const regExp = /(\d{1,2})\.(\d{1,2}).(\d{4})/;
+
+  if (regExp.test(inD, outD) === false) return false;
+
+  let [, dSI, mSI, ySI] = regExp.exec(inD);
+  let [, dSO, mSO, ySO] = regExp.exec(outD);
+
+  let [dI, mI, yI] = [dSI, mSI, ySI].map((e) => +e);
+  let [dO, mO, yO] = [dSO, mSO, ySO].map((e) => +e);
+
+  let dateIn = new Date(`${mI}.${dI}.${yI}`);
+  let dateOut = new Date(`${mO}.${dO}.${yO}`);
+  if (dateIn == "Invalid Date" || dateOut == "Invalide Date") return false;
+  let value = [dateIn, dateOut];
+
+  return value;
+}
+
 module.exports = {
   logStart() {
     console.log("|*|*|*--- I AM ALIVE ---*|*|*|");
@@ -66,6 +85,34 @@ module.exports = {
           phone: +arr[1],
         };
         return client;
+      }
+    } else return "Неверный формат";
+  },
+
+  checkAddRecord(msg) {
+    let record;
+    if (!!msg.text) {
+      let arr = msg.text.split(",");
+      let date = checkDate(arr[1], arr[2]);
+
+      if (
+        arr.length < 3 ||
+        arr.length > 4 ||
+        isNaN(+arr[0]) ||
+        date[0] === undefined ||
+        date[1] === undefined ||
+        date === false
+      ) {
+        return "Неверный формат";
+      } else {
+        record = {
+          id: arr[0],
+          dateIn: date[0],
+          dateOut: date[1],
+          description: arr[3],
+        };
+        console.log(record, "<-----record--*");
+        return record;
       }
     } else return "Неверный формат";
   },

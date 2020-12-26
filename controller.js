@@ -146,3 +146,7 @@ exports.addClient = async (msg) => {
     }
   });
 };
+
+exports.addRecord = async (msg) => {
+  
+}
