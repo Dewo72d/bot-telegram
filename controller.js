@@ -21,31 +21,7 @@ exports.outClients = () => {
 };
 
 // SELECTION BY ID
-exports.selectionById = async (intId) => {
-  const maxId = await helper.getMaxId();
-
-  return new Promise((resolve, reject) => {
-    if (isNaN(intId) || intId > maxId) {
-      resolve("Такого клиента нет");
-    } else {
-      db.connection.query(
-        `SELECT * from client WHERE id = ${intId}`,
-        (error, result) => {
-          if (error) {
-            reject(error);
-          } else {
-            const selection = result
-              .map((i, l) => {
-                return `<b>Id:</b> ${i.id}\n<b>Имя:</b> ${i.name}\n<b>Телефона:</b> ${i.phone_number}\n`;
-              })
-              .join("\n");
-            resolve(selection);
-          }
-        }
-      );
-    }
-  });
-};
+/*
 
 // Selection by phone
 exports.selectionByNumber = async (phone_number) => {
@@ -73,7 +49,7 @@ exports.selectionByNumber = async (phone_number) => {
       );
     }
   });
-};
+};*/
 
 // selection by name
 exports.selectionByName = async (name) => {

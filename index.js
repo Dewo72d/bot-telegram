@@ -25,7 +25,7 @@ bot.onText(/\/start/, async (msg) => {
   bot.on("message", async (msg) => {
     try {
       console.log("Меня потрогал:", msg.from.first_name);
-      const chatid = helper.getChatId(msg); //-------------------------- Стоит убрать
+      const chatid = helper.getChatId(msg);
 
       //main menu switch
       switch (msg.text) {
@@ -35,7 +35,7 @@ bot.onText(/\/start/, async (msg) => {
             reply_markup: { keyboard: keyboard.selectMenuClient },
           });
           //Show all data base
-          bot.on("message", async (msg) => {
+          bot.once("message", async (msg) => {
             try {
               switch (msg.text) {
                 case keyNav.selectMenuB.showAllDb:
@@ -50,7 +50,7 @@ bot.onText(/\/start/, async (msg) => {
                   await bot.sendMessage(chatid, "ВЫБИРАЮ ПО НОМЕРУ", {
                     reply_markup: { keyboard: keyboard.cancelI },
                   });
-                  bot.on("message", async (msg) => {
+                  bot.once("message", async (msg) => {
                     await bot.sendMessage(
                       chatid,
                       await controller.selectionByNumber(msg.text),
@@ -65,7 +65,7 @@ bot.onText(/\/start/, async (msg) => {
                   await bot.sendMessage(chatid, "Имя", {
                     parse_mode: "HTML",
                   });
-                  bot.on("message", async (msg) => {
+                  bot.once("message", async (msg) => {
                     await bot.sendMessage(
                       chatid,
                       await controller.selectionByName(msg.text),
@@ -75,7 +75,7 @@ bot.onText(/\/start/, async (msg) => {
                     );
                   });
                   break;
-                // Edit function
+                // Edit client function
                 case keyNav.functionMenuB.change:
                   await bot.sendMessage(
                     chatid,
@@ -84,7 +84,7 @@ bot.onText(/\/start/, async (msg) => {
                       reply_markup: { keyboard: keyboard.cancelI },
                     }
                   );
-                  bot.on("message", async (msg) => {
+                  bot.once("message", async (msg) => {
                     await bot.sendMessage(
                       chatid,
                       await controller
@@ -113,7 +113,7 @@ bot.onText(/\/start/, async (msg) => {
             reply_markup: { keyboard: keyboard.addMenu },
           });
 
-          bot.on("message", async (msg) => {
+          bot.once("message", async (msg) => {
             switch (msg.text) {
               case keyNav.addMenuB.client:
                 await bot.sendMessage(
@@ -123,7 +123,7 @@ bot.onText(/\/start/, async (msg) => {
                     reply_markup: { keyboard: keyboard.cancelI },
                   }
                 );
-                bot.on("message", async (msg) => {
+                bot.once("message", async (msg) => {
                   await bot.sendMessage(
                     chatid,
                     await controller
@@ -145,13 +145,13 @@ bot.onText(/\/start/, async (msg) => {
                     reply_markup: { keyboard: keyboard.cancelI },
                   }
                 );
-                bot.on("message", async (msg) => {
+                bot.once("message", async (msg) => {
                   await bot.sendMessage(
                     chatid,
                     await controller
                       .addRecord(msg)
                       .catch(
-                        () => "Неверный формат/Клиента с таким номером нет"
+                        () => "Неверный формат/Клиент с таким номером нет"
                       ),
                     {
                       parse_mode: "HTML",
