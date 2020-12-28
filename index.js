@@ -1,5 +1,5 @@
 const TelegramBot = require("node-telegram-bot-api");
-const token = require("./token")
+const token = require("./token");
 const controller = require("./controller");
 const keyNav = require("./keyboard/keyboard-buttons");
 const keyboard = require("./keyboard/keyboard");
@@ -151,13 +151,14 @@ bot.onText(/\/start/, async (msg) => {
                     await controller
                       .addRecord(msg)
                       .catch(
-                        () => "Неверный формат/Клиент с таким номером есть"
+                        () => "Неверный формат/Клиента с таким номером нет"
                       ),
                     {
                       parse_mode: "HTML",
                     }
                   );
                 });
+                break;
             }
           });
           break;

@@ -8,13 +8,15 @@ function checkDate(inD, outD) {
 
   let [, dSI, mSI, ySI] = regExp.exec(inD);
   let [, dSO, mSO, ySO] = regExp.exec(outD);
-
   let [dI, mI, yI] = [dSI, mSI, ySI].map((e) => +e);
   let [dO, mO, yO] = [dSO, mSO, ySO].map((e) => +e);
 
-  let dateIn = new Date(`${mI}.${dI}.${yI}`);
-  let dateOut = new Date(`${mO}.${dO}.${yO}`);
-  if (dateIn == "Invalid Date" || dateOut == "Invalide Date") return false;
+  let dateIn = `${yI}.${mI}.${dI}`;
+  let dateOut = `${yO}.${mO}.${dO}`;
+  let checkI = new Date(dateIn);
+  let checkO = new Date(dateOut);
+  if (checkI == "Invalid Date" || checkO == "Invalide Date") return false;
+
   let value = [dateIn, dateOut];
 
   return value;

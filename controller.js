@@ -148,5 +148,26 @@ exports.addClient = async (msg) => {
 };
 
 exports.addRecord = async (msg) => {
-  
-}
+  const value = helper.checkAddRecord(msg);
+  console.log(value);
+  return new Promise((resolve, reject) => {
+    if (value === "Неверный формат") reject();
+    db.connection.query(`SELECT * FROM client WHERE phone_number = ${value.id}`, (error, result) => {
+      if (error || result.length === 0) {
+        console.log(result, error, "<-----SQL--*");
+        reject();
+      } else {
+        console.log(result);
+        db.connection.query(
+          `INSERT INTO record (id, date_in, date_out, description) VALUES ('${value.id}','${value.dateIn}','${value.dateOut}','${value.description}')`,
+          (error, result) => {
+            if (error) return reject();
+
+            console.log(result);
+            resolve("Успешно");
+          }
+        );
+      }
+    });
+  });
+};
