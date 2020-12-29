@@ -25,5 +25,5 @@ module.exports = {
     ],
     [keyNav.cencelB.cancel],
   ],
-  cancelI: [[keyNav.cencelB.cancel]],
+  cancelI: [[keyNav.cencelB.cancel], [keyNav.cencelB.cancelView]],
 };

@@ -47,7 +47,7 @@ bot.onText(/\/start/, async (msg) => {
                 //Select by somesing switch
                 // Selection by phone number
                 case keyNav.selectMenuB.selectByNumber:
-                  await bot.sendMessage(chatid, "ВЫБИРАЮ ПО НОМЕРУ", {
+                  await bot.sendMessage(chatid, "Выбрать по номеру", {
                     reply_markup: { keyboard: keyboard.cancelI },
                   });
                   bot.once("message", async (msg) => {
@@ -65,7 +65,7 @@ bot.onText(/\/start/, async (msg) => {
                   await bot.sendMessage(chatid, "Имя", {
                     parse_mode: "HTML",
                   });
-                  bot.once("message", async (msg) => {
+                  bot.onсe("message", async (msg) => {
                     await bot.sendMessage(
                       chatid,
                       await controller.selectionByName(msg.text),
@@ -165,6 +165,12 @@ bot.onText(/\/start/, async (msg) => {
         case keyNav.cencelB.cancel:
           await bot.sendMessage(chatid, `Главное Меню`, {
             reply_markup: { keyboard: keyboard.mainMenu },
+          });
+          break;
+
+        case keyNav.cencelB.cancelView:
+          await bot.sendMessage(chatid, "Меню", {
+            reply_markup: { keyboard: keyboard.selectMenuClient },
           });
           break;
       }

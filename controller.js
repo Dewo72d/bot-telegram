@@ -20,9 +20,6 @@ exports.outClients = () => {
   );
 };
 
-// SELECTION BY ID
-/*
-
 // Selection by phone
 exports.selectionByNumber = async (phone_number) => {
   return new Promise((resolve, reject) => {
@@ -49,7 +46,7 @@ exports.selectionByNumber = async (phone_number) => {
       );
     }
   });
-};*/
+};
 
 // selection by name
 exports.selectionByName = async (name) => {

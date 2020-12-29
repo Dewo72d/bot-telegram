@@ -29,6 +29,7 @@ module.exports = {
     delete: "Удалить",
   },
   cencelB: {
-    cancel: "Назад",
+    cancel: "Главное меню",
+    cancelView: "Назад",
   },
 };
