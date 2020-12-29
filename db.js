@@ -13,16 +13,7 @@ connection.connect((err) => {
   console.log("Connected");
 });
 
-const reqOnDb = (sqlreq) => {
-  connection.query(sqlreq, (err, result) => {
-    if (err) console.log("Ошибочка " + err);
-    console.log(result);
-  });
-};
-
 const db = {};
-
-db.reqOnDb = reqOnDb;
 db.connection = connection;
 
 module.exports = db;

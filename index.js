@@ -29,24 +29,25 @@ bot.onText(/\/start/, async (msg) => {
 
       //main menu switch
       switch (msg.text) {
-        case keyNav.mainMenuB.view:
+        case keyNav.mainMenuB.viewClient:
           await bot.sendMessage(chatid, "Меню клиентов", {
             parse_mode: "HTML",
             reply_markup: { keyboard: keyboard.selectMenuClient },
           });
-          //Show all data base
+          
           bot.once("message", async (msg) => {
+            bot.deleteMessage(msg.chat.id, msg.message_id);
             try {
-              switch (msg.text) {
+              switch (msg.text) { //Show all data base
                 case keyNav.selectMenuB.showAllDb:
                   await bot.sendMessage(chatid, await controller.outClients(), {
                     parse_mode: "HTML",
+                    reply_markup: { keyboard: keyboard.cancelI },
                   });
                   break;
 
                 //Select by somesing switch
-                // Selection by phone number
-                case keyNav.selectMenuB.selectByNumber:
+                case keyNav.selectMenuB.selectByNumber: // Selection by phone number
                   await bot.sendMessage(chatid, "Выбрать по номеру", {
                     reply_markup: { keyboard: keyboard.cancelI },
                   });
@@ -55,6 +56,7 @@ bot.onText(/\/start/, async (msg) => {
                       chatid,
                       await controller.selectionByNumber(msg.text),
                       {
+                        reply_markup: { keyboard: keyboard.cancelI },
                         parse_mode: "HTML",
                       }
                     );
@@ -63,9 +65,10 @@ bot.onText(/\/start/, async (msg) => {
                 // Selection by name
                 case keyNav.selectMenuB.selectByName:
                   await bot.sendMessage(chatid, "Имя", {
+                    reply_markup: { keyboard: keyboard.cancelI },
                     parse_mode: "HTML",
                   });
-                  bot.onсe("message", async (msg) => {
+                  bot.once("message", async (msg) => {
                     await bot.sendMessage(
                       chatid,
                       await controller.selectionByName(msg.text),
@@ -163,14 +166,8 @@ bot.onText(/\/start/, async (msg) => {
           });
           break;
         case keyNav.cencelB.cancel:
-          await bot.sendMessage(chatid, `Главное Меню`, {
+          await bot.sendMessage(chatid, `Выход`, {
             reply_markup: { keyboard: keyboard.mainMenu },
-          });
-          break;
-
-        case keyNav.cencelB.cancelView:
-          await bot.sendMessage(chatid, "Меню", {
-            reply_markup: { keyboard: keyboard.selectMenuClient },
           });
           break;
       }

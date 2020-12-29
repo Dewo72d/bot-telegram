@@ -11,7 +11,7 @@ exports.outClients = () => {
       } else {
         const clients = result
           .map((i, l) => {
-            return `<b>Id:</b> ${i.id}\n<b>Имя:</b> ${i.name}\n<b>Телефона:</b> ${i.phone_number}\n`;
+            return `<b>Имя:</b> ${i.name}\n<b>Телефон:</b> ${i.phone_number}\n`;
           })
           .join("\n");
         resolve(clients);
@@ -23,6 +23,7 @@ exports.outClients = () => {
 // Selection by phone
 exports.selectionByNumber = async (phone_number) => {
   return new Promise((resolve, reject) => {
+    if (phone_number === "Главное меню") return false;
     if (isNaN(phone_number)) {
       resolve("Такого клиента нет");
     } else {
@@ -37,7 +38,7 @@ exports.selectionByNumber = async (phone_number) => {
             console.log(result);
             const selection = result
               .map((i, l) => {
-                return `<b>Id:</b> ${i.id}\n<b>Имя:</b> ${i.name}\n<b>Телефона:</b> ${i.phone_number}\n`;
+                return `<b>Имя:</b> ${i.name}\n<b>Телефон:</b> ${i.phone_number}\n`;
               })
               .join("\n");
             resolve(selection);
@@ -51,6 +52,7 @@ exports.selectionByNumber = async (phone_number) => {
 // selection by name
 exports.selectionByName = async (name) => {
   return new Promise((resolve, reject) => {
+    if (name === "Главное меню") return false;
     db.connection.query(
       `SELECT * from client WHERE name LIKE '%${name}%'`,
       (error, result) => {
@@ -62,7 +64,7 @@ exports.selectionByName = async (name) => {
           console.log(result);
           const selection = result
             .map((i) => {
-              return `<b>Id:</b> ${i.id}\n<b>Имя:</b> ${i.name}\n<b>Телефона:</b> ${i.phone_number}\n`;
+              return `<b>Имя:</b> ${i.name}\n<b>Телефон:</b> ${i.phone_number}\n`;
             })
             .join("\n");
           console.log(typeof selection, selection);
@@ -75,8 +77,8 @@ exports.selectionByName = async (name) => {
 
 // Edit client
 exports.editClient = async (msg) => {
+  if (msg === "Главное меню") return "Выхожу";
   const value = helper.checkEditClient(msg);
-
   return new Promise((resolve, reject) => {
     if (value === "Неверный формат") {
       reject();
@@ -98,8 +100,8 @@ exports.editClient = async (msg) => {
 };
 
 exports.addClient = async (msg) => {
+  if (msg === "Главное меню") return "Выхожу";
   const value = helper.checkAddClient(msg);
-
   return new Promise((resolve, reject) => {
     if (value === "Неверный формат") {
       reject();
@@ -121,26 +123,30 @@ exports.addClient = async (msg) => {
 };
 
 exports.addRecord = async (msg) => {
+  if (msg === "Главное меню") return "Выхожу";
   const value = helper.checkAddRecord(msg);
   console.log(value);
   return new Promise((resolve, reject) => {
     if (value === "Неверный формат") reject();
-    db.connection.query(`SELECT * FROM client WHERE phone_number = ${value.id}`, (error, result) => {
-      if (error || result.length === 0) {
-        console.log(result, error, "<-----SQL--*");
-        reject();
-      } else {
-        console.log(result);
-        db.connection.query(
-          `INSERT INTO record (id, date_in, date_out, description) VALUES ('${value.id}','${value.dateIn}','${value.dateOut}','${value.description}')`,
-          (error, result) => {
-            if (error) return reject();
+    db.connection.query(
+      `SELECT * FROM client WHERE phone_number = ${value.id}`,
+      (error, result) => {
+        if (error || result.length === 0) {
+          console.log(result, error, "<-----SQL--*");
+          reject();
+        } else {
+          console.log(result);
+          db.connection.query(
+            `INSERT INTO record (id, date_in, date_out, description) VALUES ('${value.id}','${value.dateIn}','${value.dateOut}','${value.description}')`,
+            (error, result) => {
+              if (error) return reject();
 
-            console.log(result);
-            resolve("Успешно");
-          }
-        );
+              console.log(result);
+              resolve("Успешно");
+            }
+          );
+        }
       }
-    });
+    );
   });
 };

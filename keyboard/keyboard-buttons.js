@@ -1,7 +1,8 @@
 module.exports = {
   mainMenuB: {
     add: "Добавить",
-    view: "Просмотреть / Изменить",
+    viewClient: "Клиенты",
+    viewRecord: "Заезды"
   },
   addMenuB: {
     client: "Клиента",
@@ -30,6 +31,5 @@ module.exports = {
   },
   cencelB: {
     cancel: "Главное меню",
-    cancelView: "Назад",
   },
 };

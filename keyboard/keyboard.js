@@ -1,7 +1,13 @@
 const keyNav = require("./keyboard-buttons");
 
 module.exports = {
-  mainMenu: [[keyNav.mainMenuB.add, keyNav.mainMenuB.view]],
+  mainMenu: [
+    [
+      keyNav.mainMenuB.viewClient,
+      keyNav.mainMenuB.viewRecord,
+      keyNav.mainMenuB.add,
+    ],
+  ],
   addMenu: [
     [keyNav.addMenuB.accounting, keyNav.addMenuB.client],
     [keyNav.cencelB.cancel],
@@ -25,5 +31,5 @@ module.exports = {
     ],
     [keyNav.cencelB.cancel],
   ],
-  cancelI: [[keyNav.cencelB.cancel], [keyNav.cencelB.cancelView]],
+  cancelI: [[keyNav.cencelB.cancel]],
 };

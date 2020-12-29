@@ -31,10 +31,6 @@ module.exports = {
     return msg.chat.id;
   },
 
-  getText(msg) {
-    return msg.chat.text;
-  },
-
   getMaxId() {
     return new Promise((resolve, reject) =>
       db.connection.query("SELECT MAX(id) from client", (error, result) => {
