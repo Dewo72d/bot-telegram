@@ -14,11 +14,11 @@ module.exports = {
   },
   selectMenuB: {
     showAllDb: "Показать всех клиентов",
+    showAllRecordDb: "Показать все заезды",
     selectByName: "Найти по имени",
     selectByNumber: "Найти по номеру",
-    selectByDateOut: "Выбрать по дате заезда",
-    selectByDateIn: "Выбрать по дате выезда",
-    // Прододжать тут
+    selectByDateOut: "Найти по дате заезда",
+    selectByDateIn: "Найти по дате выезда",
   },
   selectionMenuB: {
     selectionByNumber: "Вывести по номеру",

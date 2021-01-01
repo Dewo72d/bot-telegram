@@ -34,11 +34,13 @@ bot.onText(/\/start/, async (msg) => {
             parse_mode: "HTML",
             reply_markup: { keyboard: keyboard.selectMenuClient },
           });
-          
+
           bot.once("message", async (msg) => {
             bot.deleteMessage(msg.chat.id, msg.message_id);
             try {
-              switch (msg.text) { //Show all data base
+              switch (
+                msg.text //Show all data base
+              ) {
                 case keyNav.selectMenuB.showAllDb:
                   await bot.sendMessage(chatid, await controller.outClients(), {
                     parse_mode: "HTML",
@@ -82,7 +84,7 @@ bot.onText(/\/start/, async (msg) => {
                 case keyNav.functionMenuB.change:
                   await bot.sendMessage(
                     chatid,
-                    `Введите данные в формате:\nТелефон как идентификатор, Имя, Телефон\n\nПример: 380664620504, Алесандр, 380991234567`,
+                    `Введите данные в формате:\nТелефон как идентификатор, Имя\n\nПример: 380664620504, Алесандр`,
                     {
                       reply_markup: { keyboard: keyboard.cancelI },
                     }
@@ -110,12 +112,10 @@ bot.onText(/\/start/, async (msg) => {
           break;
 
         //-----Add menu------//
-
         case keyNav.mainMenuB.add:
           await bot.sendMessage(chatid, `Добавить`, {
             reply_markup: { keyboard: keyboard.addMenu },
           });
-
           bot.once("message", async (msg) => {
             switch (msg.text) {
               case keyNav.addMenuB.client:
@@ -165,11 +165,45 @@ bot.onText(/\/start/, async (msg) => {
             }
           });
           break;
+        //--------------//
+
+        //----Record menu-----//
+        case keyNav.mainMenuB.viewRecord:
+          await bot.sendMessage(chatid, `Заезды`, {
+            reply_markup: { keyboard: keyboard.selectMenuAcounting },
+          });
+          bot.once("message", async (msg) => {
+            switch (msg.text) {
+              case keyNav.selectMenuB.showAllRecordDb:
+                await bot.sendMessage(
+                  chatid,
+                  await controller.outRecords().catch(() => "Ошибка"),
+                  {
+                    parse_mode: "HTML",
+                    reply_markup: { keyboard: keyboard.cancelI },
+                  }
+                );
+                break;
+              case keyNav.selectMenuB.selectByDateIn:
+                break;
+              case keyNav.selectMenuB.selectByDateOut:
+                break;
+              case keyNav.selectMenuB.selectByNumber:
+                break;
+              case keyNav.functionMenuB.change:
+                break;
+            }
+          });
+          break;
+        //--------------//
+
+        //-------Cancel-----//
         case keyNav.cencelB.cancel:
           await bot.sendMessage(chatid, `Выход`, {
             reply_markup: { keyboard: keyboard.mainMenu },
           });
           break;
+        //--------------//
       }
     } catch (e) {
       console.error(e);

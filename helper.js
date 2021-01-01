@@ -48,6 +48,7 @@ module.exports = {
   },
 
   checkEditClient(msg) {
+    if (msg.text === "Главное меню") return "Главное меню";
     let client;
     if (!!msg.text) {
       let arr = msg.text.split(",");
@@ -71,6 +72,7 @@ module.exports = {
   },
 
   checkAddClient(msg) {
+    if (msg.text === "Главное меню") return "Главное меню";
     let client;
     if (!!msg.text) {
       let arr = msg.text.split(",");
@@ -88,6 +90,8 @@ module.exports = {
   },
 
   checkAddRecord(msg) {
+    if (msg.text === "Главное меню") return "Главное меню";
+
     let record;
     if (!!msg.text) {
       let arr = msg.text.split(",");

@@ -23,12 +23,9 @@ module.exports = {
     [keyNav.cencelB.cancel],
   ],
   selectMenuAcounting: [
+    [keyNav.selectMenuB.showAllRecordDb],
     [keyNav.selectMenuB.selectByDateIn, keyNav.selectMenuB.selectByDateOut],
-    [
-      keyNav.selectionMenuB.selectByNumber,
-      keyNav.selectionMenuB.selectByDateIn,
-      keyNav.selectionMenuB.selectByDateOut,
-    ],
+    [keyNav.selectMenuB.selectByNumber, keyNav.functionMenuB.change],
     [keyNav.cencelB.cancel],
   ],
   cancelI: [[keyNav.cencelB.cancel]],

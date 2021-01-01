@@ -82,37 +82,79 @@ exports.editClient = async (msg) => {
     if (value === "Неверный формат") {
       reject();
     } else {
-      db.connection.query(
-        `UPDATE client set phone_number = '${value.phone}', name = '${value.name}' WHERE phone_number ='${value.id_num}'`,
-        (error, result) => {
-          if (error) {
-            console.log(error);
-            reject();
-          } else {
-            console.log(result);
-            resolve("Успешно");
+      if (value === "Главное меню") {
+        resolve("Успешно..");
+      } else {
+        db.connection.query(
+          `UPDATE client SET name = '${value.name}' WHERE phone_number ='${value.id_num}'`,
+          (error, result) => {
+            if (error) {
+              console.log(error);
+              reject();
+            } else {
+              console.log(result);
+              resolve("Успешно");
+            }
           }
-        }
-      );
+        );
+      }
     }
   });
 };
 
+// Add client
 exports.addClient = async (msg) => {
   const value = helper.checkAddClient(msg);
   return new Promise((resolve, reject) => {
     if (value === "Неверный формат") {
       reject();
     } else {
+      if (value === "Главное меню") {
+        resolve("Успешно..");
+      } else {
+        db.connection.query(
+          `INSERT INTO client(name, phone_number) VALUES ('${value.name}', ${value.phone})`,
+          (error, result) => {
+            if (error) {
+              console.log(error);
+              reject();
+            } else {
+              console.log(result);
+              resolve("Успешно");
+            }
+          }
+        );
+      }
+    }
+  });
+};
+
+// Add record
+exports.addRecord = async (msg) => {
+  const value = helper.checkAddRecord(msg);
+  console.log(value);
+  return new Promise((resolve, reject) => {
+    if (value === "Неверный формат") reject();
+    if (value === "Главное меню") {
+      resolve("Успешно..");
+    } else {
       db.connection.query(
-        `INSERT INTO client(name, phone_number) VALUES ('${value.name}', ${value.phone})`,
+        `SELECT * FROM client WHERE phone_number = ${value.id}`,
         (error, result) => {
-          if (error) {
-            console.log(error);
+          if (error || result.length === 0) {
+            console.log(result, error, "<-----SQL--*");
             reject();
           } else {
             console.log(result);
-            resolve("Успешно");
+            db.connection.query(
+              `INSERT INTO record (id, date_in, date_out, description) VALUES ('${value.id}','${value.dateIn}','${value.dateOut}','${value.description}')`,
+              (error, result) => {
+                if (error) return reject();
+
+                console.log(result);
+                resolve("Успешно");
+              }
+            );
           }
         }
       );
@@ -120,30 +162,30 @@ exports.addClient = async (msg) => {
   });
 };
 
-exports.addRecord = async (msg) => {
-  const value = helper.checkAddRecord(msg);
-  console.log(value);
-  return new Promise((resolve, reject) => {
-    if (value === "Неверный формат") reject();
+// Out all Records
+exports.outRecords = () => {
+  return new Promise((resolve, reject) =>
     db.connection.query(
-      `SELECT * FROM client WHERE phone_number = ${value.id}`,
+      "SELECT * FROM record LEFT OUTER JOIN client ON client.phone_number = record.id",
       (error, result) => {
-        if (error || result.length === 0) {
-          console.log(result, error, "<-----SQL--*");
-          reject();
+        if (error) {
+          console.log(error);
+          reject(error);
         } else {
-          console.log(result);
-          db.connection.query(
-            `INSERT INTO record (id, date_in, date_out, description) VALUES ('${value.id}','${value.dateIn}','${value.dateOut}','${value.description}')`,
-            (error, result) => {
-              if (error) return reject();
-
-              console.log(result);
-              resolve("Успешно");
-            }
-          );
+          const clients = result
+            .map((i, l) => {
+              return `<b>Имя:</b> ${i.name} <b>Телефон:</b> ${
+                i.phone_number
+              }\n<b>Заезд:</b> ${new Date(
+                i.date_in
+              ).toLocaleDateString()}\n<b>Выезд:</b> ${new Date(
+                i.date_out
+              ).toLocaleDateString()}\n<b>Описание:</b> ${i.description}\n`;
+            })
+            .join("\n");
+          resolve(clients);
         }
       }
-    );
-  });
+    )
+  );
 };
