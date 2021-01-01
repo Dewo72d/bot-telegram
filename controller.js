@@ -77,7 +77,6 @@ exports.selectionByName = async (name) => {
 
 // Edit client
 exports.editClient = async (msg) => {
-  if (msg === "Главное меню") return "Выхожу";
   const value = helper.checkEditClient(msg);
   return new Promise((resolve, reject) => {
     if (value === "Неверный формат") {
@@ -100,7 +99,6 @@ exports.editClient = async (msg) => {
 };
 
 exports.addClient = async (msg) => {
-  if (msg === "Главное меню") return "Выхожу";
   const value = helper.checkAddClient(msg);
   return new Promise((resolve, reject) => {
     if (value === "Неверный формат") {
@@ -123,7 +121,6 @@ exports.addClient = async (msg) => {
 };
 
 exports.addRecord = async (msg) => {
-  if (msg === "Главное меню") return "Выхожу";
   const value = helper.checkAddRecord(msg);
   console.log(value);
   return new Promise((resolve, reject) => {
