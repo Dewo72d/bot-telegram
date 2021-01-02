@@ -1,3 +1,6 @@
 # bot-telegram
-Poop-bot with SQL for the records
-For start: npm run main
+ Poop-bot with SQL for the records
+ ### For start:
+```
+ npm run main
+```
