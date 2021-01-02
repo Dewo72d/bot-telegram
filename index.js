@@ -185,8 +185,18 @@ bot.onText(/\/start/, async (msg) => {
                 );
                 break;
               case keyNav.selectMenuB.selectByDateIn:
-                break;
-              case keyNav.selectMenuB.selectByDateOut:
+                await bot.sendMessage(chatid, "Выбрать по дате заезда", {
+                  reply_markup: { keyboard: keyboard.cancelI },
+                });
+                bot.once("message", async (msg) => {
+                  await bot.sendMessage(
+                    chatid,
+                   await controller.selectionByDate_in(msg).catch(() => "Ошибка"),
+                    {
+                      parse_mode: "HTML",
+                    }
+                  );
+                });
                 break;
               case keyNav.selectMenuB.selectByNumber:
                 break;

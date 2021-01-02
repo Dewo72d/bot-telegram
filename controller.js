@@ -189,3 +189,37 @@ exports.outRecords = () => {
     )
   );
 };
+
+//Selection by date
+exports.selectionByDate_in = async (date) => {
+  return new Promise((resolve, reject) => {
+    if (date.text === "Главное меню") return false;
+    db.connection.query(
+      `SELECT DATE(date_in), id, date_out, description FROM record  WHERE date_in LIKE '%${date.text}%'`,
+      (error, result) => {
+        if (error) {
+          console.log(error);
+          reject(error);
+        } else if (result.length === 0) {
+          resolve("Совпадений не найдено");
+        } else {
+          console.log(result);
+          const selection = result
+            .map((i) => {
+              return `<b>Телефон:</b> ${
+                i.id
+              }\n<b>Заезд:</b> ${new Date(
+                i['DATE(date_in)']
+              ).toLocaleDateString()}\n<b>Выезд:</b> ${new Date(
+                i.date_out
+              ).toLocaleDateString()}\n<b>Описание:</b> ${i.description}\n`;
+            })
+            .join("\n");
+          console.log(typeof selection, selection);
+          resolve(selection);
+        }
+      }
+    );
+  });
+};
+

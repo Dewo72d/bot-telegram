@@ -17,8 +17,7 @@ module.exports = {
     showAllRecordDb: "Показать все заезды",
     selectByName: "Найти по имени",
     selectByNumber: "Найти по номеру",
-    selectByDateOut: "Найти по дате заезда",
-    selectByDateIn: "Найти по дате выезда",
+    selectByDate: "Найти по дате",
   },
   selectionMenuB: {
     selectionByNumber: "Вывести по номеру",
