@@ -178,7 +178,11 @@ bot.onText(/\/start/, async (msg) => {
               case keyNav.selectMenuB.showAllRecordDb:
                 await bot.sendMessage(
                   chatid,
-                  await controller.outRecords().catch(() => "Ошибка"),
+                  await controller
+                    .outRecords()
+                    .catch(
+                      (error) => "Неверный формат/Клиент с таким номером нет"
+                    ),
                   {
                     parse_mode: "HTML",
                     reply_markup: { keyboard: keyboard.cancelI },
@@ -197,7 +201,11 @@ bot.onText(/\/start/, async (msg) => {
                 bot.once("message", async (msg) => {
                   await bot.sendMessage(
                     chatid,
-                    await controller.selectionByDate(msg).catch(() => "Ошибка"),
+                    await controller
+                      .selectionByDate(msg)
+                      .catch(
+                        (error) => "Неверный формат/Клиент с таким номером нет"
+                      ),
                     {
                       parse_mode: "HTML",
                     }
@@ -217,7 +225,10 @@ bot.onText(/\/start/, async (msg) => {
                   await bot.sendMessage(
                     chatid,
                     await controller
-                      .selectionRecordByNumber(msg.text).catch(() => "Ошибка"),
+                      .selectionRecordByNumber(msg.text)
+                      .catch(
+                        (error) => "Неверный формат/Клиент с таким номером нет"
+                      ),
                     {
                       parse_mode: "HTML",
                     }
@@ -226,7 +237,26 @@ bot.onText(/\/start/, async (msg) => {
 
                 break;
               case keyNav.functionMenuB.change:
-                //-------------
+                await bot.sendMessage(
+                  chatid,
+                  `Введите данные в формате:\nНомер клиента, Полная дата заезда, Полная дата выезда, Заметка\n\n380664620504, 26.12.2020, 27.12.2020, Чисто`,
+                  {
+                    reply_markup: { keyboard: keyboard.cancelI },
+                  }
+                );
+                bot.once("message", async (msg) => {
+                  await bot.sendMessage(
+                    chatid,
+                    await controller
+                      .editRecord(msg)
+                      .catch(
+                        (error) => "Неверный формат/Клиент с таким номером нет"
+                      ),
+                    {
+                      parse_mode: "HTML",
+                    }
+                  );
+                });
                 break;
             }
           });

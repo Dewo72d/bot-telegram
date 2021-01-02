@@ -54,12 +54,10 @@ module.exports = {
         case "client":
           let client;
           let arrClient = msg.split(",");
-          console.log(arrClient.length);
 
           if (arrClient.length != 2 || !Number(arrClient[0])) {
             return "Неверный формат";
           } else {
-            console.log(arrClient[0]);
             client = {
               id_num: +arrClient[0],
               name: arrClient[1],
@@ -69,21 +67,26 @@ module.exports = {
         case "record":
           let record;
           let arrRecord = msg.split(",");
+          let date = checkDate(arrRecord[1], arrRecord[2]);
+          console.log(date[1], "<--------date");
+
           if (
-            arrRecord.length != 4 ||
-            isNaN(+arrRecord[0]) ||
-            new Date(+arrRecord[0]) ||
-            new Date(+arrRecord[1])
+            arrRecord.length < 4 ||
+            arrRecord.length > 4 ||
+            date[0] === undefined ||
+            date[1] === undefined ||
+            date === false
           ) {
+            console.log("error");
             return "Неверный формат";
           } else {
             record = {
               id_num: +arrRecord[0],
-              date_in: +arrRecord[1],
-              date_out: +arrRecord[2],
+              date_in: date[0],
+              date_out: date[1],
               dascription: arrRecord[3],
             };
-            return client;
+            return record;
           }
       }
     } else return "Неверный формат";

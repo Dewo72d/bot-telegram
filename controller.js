@@ -258,17 +258,19 @@ exports.selectionRecordByNumber = async (phone_number) => {
 };
 
 // Edit Record
-exports.changeRecord = async (msg) => {
+exports.editRecord = async (msg) => {
   const value = helper.checkEditClient(msg.text, "record");
   return new Promise((resolve, reject) => {
     if (value === "Неверный формат") {
+      console.log(value, "error");
       reject();
     } else {
       if (value === "Главное меню") {
         resolve("Успешно..");
       } else {
+        console.log(value)
         db.connection.query(
-          `UPDATE record SET date_in = '${value.date_in}' WHERE phone_number ='${value.id_num}'`,
+          `UPDATE record SET date_in = '${value.date_in}', date_out = '${value.date_out}', description = '${value.dascription}' WHERE id = '${value.id_num}'`,
           (error, result) => {
             if (error) {
               console.log(error);
