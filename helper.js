@@ -47,26 +47,44 @@ module.exports = {
     );
   },
 
-  checkEditClient(msg) {
-    if (msg.text === "Главное меню") return "Главное меню";
-    let client;
-    if (!!msg.text) {
-      let arr = msg.text.split(",");
+  checkEditClient(msg, caseName) {
+    if (msg === "Главное меню") return "Главное меню";
+    if (typeof msg != undefined) {
+      switch (caseName) {
+        case "client":
+          let client;
+          let arrClient = msg.split(",");
+          console.log(arrClient.length);
 
-      if (
-        arr.length < 3 ||
-        arr.length > 3 ||
-        isNaN(+arr[0]) ||
-        isNaN(+arr[2])
-      ) {
-        return "Неверный формат";
-      } else {
-        client = {
-          id_num: +arr[0],
-          name: arr[1],
-          phone: +arr[2],
-        };
-        return client;
+          if (arrClient.length != 2 || !Number(arrClient[0])) {
+            return "Неверный формат";
+          } else {
+            console.log(arrClient[0]);
+            client = {
+              id_num: +arrClient[0],
+              name: arrClient[1],
+            };
+            return client;
+          }
+        case "record":
+          let record;
+          let arrRecord = msg.split(",");
+          if (
+            arrRecord.length != 4 ||
+            isNaN(+arrRecord[0]) ||
+            new Date(+arrRecord[0]) ||
+            new Date(+arrRecord[1])
+          ) {
+            return "Неверный формат";
+          } else {
+            record = {
+              id_num: +arrRecord[0],
+              date_in: +arrRecord[1],
+              date_out: +arrRecord[2],
+              dascription: arrRecord[3],
+            };
+            return client;
+          }
       }
     } else return "Неверный формат";
   },

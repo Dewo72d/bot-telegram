@@ -49,7 +49,8 @@ bot.onText(/\/start/, async (msg) => {
                   break;
 
                 //Select by somesing switch
-                case keyNav.selectMenuB.selectByNumber: // Selection by phone number
+                // Selection by phone number
+                case keyNav.selectMenuB.selectByNumber:
                   await bot.sendMessage(chatid, "Выбрать по номеру", {
                     reply_markup: { keyboard: keyboard.cancelI },
                   });
@@ -184,23 +185,48 @@ bot.onText(/\/start/, async (msg) => {
                   }
                 );
                 break;
+              //Select by date
               case keyNav.selectMenuB.selectByDate:
-                await bot.sendMessage(chatid, "Выбрать по дате заезда\nФормат: 01-01-2021", {
-                  reply_markup: { keyboard: keyboard.cancelI },
-                });
+                await bot.sendMessage(
+                  chatid,
+                  "Выбрать по дате заезда\nФормат: 01-01-2021",
+                  {
+                    reply_markup: { keyboard: keyboard.cancelI },
+                  }
+                );
                 bot.once("message", async (msg) => {
                   await bot.sendMessage(
                     chatid,
-                   await controller.selectionByDate/s(msg).catch(() => "Ошибка"),
+                    await controller.selectionByDate(msg).catch(() => "Ошибка"),
                     {
                       parse_mode: "HTML",
                     }
                   );
                 });
                 break;
+              //Select by phone
               case keyNav.selectMenuB.selectByNumber:
+                await bot.sendMessage(
+                  chatid,
+                  "Выбрать по телефону\nФормат: 380664620504",
+                  {
+                    reply_markup: { keyboard: keyboard.cancelI },
+                  }
+                );
+                bot.once("message", async (msg) => {
+                  await bot.sendMessage(
+                    chatid,
+                    await controller
+                      .selectionRecordByNumber(msg.text).catch(() => "Ошибка"),
+                    {
+                      parse_mode: "HTML",
+                    }
+                  );
+                });
+
                 break;
               case keyNav.functionMenuB.change:
+                //-------------
                 break;
             }
           });

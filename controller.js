@@ -2,7 +2,7 @@ const mysql = require("mysql");
 const db = require("./db");
 const helper = require("./helper");
 
-//Out all DB
+// Out all DB
 exports.outClients = () => {
   return new Promise((resolve, reject) =>
     db.connection.query("SELECT * FROM client", (error, result) => {
@@ -77,7 +77,8 @@ exports.selectionByName = async (name) => {
 
 // Edit client
 exports.editClient = async (msg) => {
-  const value = helper.checkEditClient(msg);
+  const value = helper.checkEditClient(msg.text, "client");
+
   return new Promise((resolve, reject) => {
     if (value === "Неверный формат") {
       reject();
@@ -190,12 +191,12 @@ exports.outRecords = () => {
   );
 };
 
-//Selection by date
+// Selection by date
 exports.selectionByDate = async (date) => {
   return new Promise((resolve, reject) => {
     if (date.text === "Главное меню") return false;
     db.connection.query(
-      `SELECT DATE(date_in), id, date_out, description FROM record  WHERE date_in  LIKE '%${date.text}%'`,
+      `SELECT DATE(date_in), id, date_out, description FROM record  WHERE date_in  LIKE '%${date.text}%' OR date_out LIKE '%${date.text}%'`,
       (error, result) => {
         if (error) {
           console.log(error);
@@ -206,10 +207,8 @@ exports.selectionByDate = async (date) => {
           console.log(result);
           const selection = result
             .map((i) => {
-              return `<b>Телефон:</b> ${
-                i.id
-              }\n<b>Заезд:</b> ${new Date(
-                i['DATE(date_in)']
+              return `<b>Телефон:</b> ${i.id}\n<b>Заезд:</b> ${new Date(
+                i["DATE(date_in)"]
               ).toLocaleDateString()}\n<b>Выезд:</b> ${new Date(
                 i.date_out
               ).toLocaleDateString()}\n<b>Описание:</b> ${i.description}\n`;
@@ -223,3 +222,64 @@ exports.selectionByDate = async (date) => {
   });
 };
 
+// Selection by phone in record
+exports.selectionRecordByNumber = async (phone_number) => {
+  return new Promise((resolve, reject) => {
+    if (phone_number === "Главное меню") return false;
+    if (isNaN(phone_number)) {
+      resolve("Такого клиента нет");
+    } else {
+      db.connection.query(
+        `SELECT * from record WHERE id LIKE '%${phone_number}%'`,
+        (error, result) => {
+          if (error) {
+            console.log(error);
+            reject(error);
+          } else if (result.length === 0) {
+            resolve("Совпадений не найдено");
+          } else {
+            console.log(result);
+            const selection = result
+              .map((i, l) => {
+                return `<b>Телефон:</b> ${i.id}\n<b>Заезд:</b> ${new Date(
+                  i.date_in
+                ).toLocaleDateString()}\n<b>Выезд:</b> ${new Date(
+                  i.date_out
+                ).toLocaleDateString()}\n<b>Описание:</b> ${i.description}\n`;
+              })
+              .join("\n");
+            console.log(selection);
+            resolve(selection);
+          }
+        }
+      );
+    }
+  });
+};
+
+// Edit Record
+exports.changeRecord = async (msg) => {
+  const value = helper.checkEditClient(msg.text, "record");
+  return new Promise((resolve, reject) => {
+    if (value === "Неверный формат") {
+      reject();
+    } else {
+      if (value === "Главное меню") {
+        resolve("Успешно..");
+      } else {
+        db.connection.query(
+          `UPDATE record SET date_in = '${value.date_in}' WHERE phone_number ='${value.id_num}'`,
+          (error, result) => {
+            if (error) {
+              console.log(error);
+              reject();
+            } else {
+              console.log(result);
+              resolve("Успешно");
+            }
+          }
+        );
+      }
+    }
+  });
+};
