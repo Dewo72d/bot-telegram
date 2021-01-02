@@ -184,14 +184,14 @@ bot.onText(/\/start/, async (msg) => {
                   }
                 );
                 break;
-              case keyNav.selectMenuB.selectByDateIn:
-                await bot.sendMessage(chatid, "Выбрать по дате заезда", {
+              case keyNav.selectMenuB.selectByDate:
+                await bot.sendMessage(chatid, "Выбрать по дате заезда\nФормат: 01-01-2021", {
                   reply_markup: { keyboard: keyboard.cancelI },
                 });
                 bot.once("message", async (msg) => {
                   await bot.sendMessage(
                     chatid,
-                   await controller.selectionByDate_in(msg).catch(() => "Ошибка"),
+                   await controller.selectionByDate/s(msg).catch(() => "Ошибка"),
                     {
                       parse_mode: "HTML",
                     }

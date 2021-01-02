@@ -191,11 +191,11 @@ exports.outRecords = () => {
 };
 
 //Selection by date
-exports.selectionByDate_in = async (date) => {
+exports.selectionByDate = async (date) => {
   return new Promise((resolve, reject) => {
     if (date.text === "Главное меню") return false;
     db.connection.query(
-      `SELECT DATE(date_in), id, date_out, description FROM record  WHERE date_in LIKE '%${date.text}%'`,
+      `SELECT DATE(date_in), id, date_out, description FROM record  WHERE date_in  LIKE '%${date.text}%'`,
       (error, result) => {
         if (error) {
           console.log(error);
