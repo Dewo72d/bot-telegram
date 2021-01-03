@@ -105,6 +105,25 @@ bot.onText(/\/start/, async (msg) => {
                     );
                   });
                   break;
+                // Delete client and all they records
+                case keyNav.functionMenuB.delete:
+                  await bot.sendMessage(
+                    chatid,
+                    `Внимание, все записи заездов этого клиента так же будут удалены!\n\nВведите номер телефона клиента:`,
+                    {
+                      reply_markup: { keyboard: keyboard.cancelI },
+                    }
+                  );
+                  bot.once("message", async (msg) => {
+                    await bot.sendMessage(
+                      chatid,
+                      await controller
+                        .deleteClient(msg.text)
+                        .catch((error) => "Ошибка/Неверный формат"),
+                      { parse_mode: "HTML" }
+                    );
+                  });
+                  break;
               }
             } catch (e) {
               console.error(e);
@@ -236,6 +255,7 @@ bot.onText(/\/start/, async (msg) => {
                 });
 
                 break;
+              // Edit record
               case keyNav.functionMenuB.change:
                 await bot.sendMessage(
                   chatid,
@@ -252,6 +272,23 @@ bot.onText(/\/start/, async (msg) => {
                       .catch(
                         (error) => "Неверный формат/Клиент с таким номером нет"
                       ),
+                    {
+                      parse_mode: "HTML",
+                    }
+                  );
+                });
+                break;
+              //Delet record
+              case keyNav.functionMenuB.delete:
+                await bot.sendMessage(chatid, `Введите id записи:`, {
+                  reply_markup: { keyboard: keyboard.cancelI },
+                });
+                bot.once("message", async (msg) => {
+                  await bot.sendMessage(
+                    chatid,
+                    await controller
+                      .deleteRecord(msg.text)
+                      .catch((error) => "Неверный формат"),
                     {
                       parse_mode: "HTML",
                     }

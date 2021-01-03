@@ -19,7 +19,7 @@ module.exports = {
   selectMenuClient: [
     [keyNav.selectMenuB.showAllDb],
     [keyNav.selectMenuB.selectByNumber, keyNav.selectMenuB.selectByName],
-    [keyNav.functionMenuB.change],
+    [keyNav.functionMenuB.change, keyNav.functionMenuB.delete],
     [keyNav.cencelB.cancel],
   ],
   selectMenuAcounting: [
