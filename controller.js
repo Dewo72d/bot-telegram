@@ -21,7 +21,7 @@ exports.outClients = async () => {
 };
 
 // Out all Records
-exports.outRecords = () => {
+exports.outRecords = async () => {
   return new Promise((resolve, reject) =>
     db.connection.query(
       "SELECT * FROM record LEFT OUTER JOIN client ON client.phone_number = record.id",
