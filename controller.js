@@ -3,7 +3,7 @@ const db = require("./db");
 const helper = require("./helper");
 
 // Out all clients
-exports.outClients = () => {
+exports.outClients = async () => {
   return new Promise((resolve, reject) =>
     db.connection.query("SELECT * FROM client", (error, result) => {
       if (error) {
